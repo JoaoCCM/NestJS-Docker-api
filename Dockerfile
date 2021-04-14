@@ -1,30 +1,18 @@
-FROM node:12.13-alpine As development
-
+FROM node:12.19.0-alpine3.9 AS development
 WORKDIR /usr/src/app
-
 COPY package*.json ./
-
 RUN npm install glob rimraf
-
-RUN npm install --only=development
-
+RUN npm install && npm cache clean --force
 COPY . .
-
 RUN npm run build
 
-FROM node:12.13-alpine as production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
+FROM node:12.19.0-alpine3.9 as production
+EXPOSE 5000
 WORKDIR /usr/src/app
-
 COPY package*.json ./
-
-RUN npm install --only=production
-
-COPY . .
-
+RUN npm install && npm cache clean --force
 COPY --from=development /usr/src/app/dist ./dist
-
+COPY ormconfig.docker.json ./ormconfig.json
+COPY .env .
 CMD ["node", "dist/main"]

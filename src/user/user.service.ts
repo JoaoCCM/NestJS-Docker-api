@@ -24,10 +24,11 @@ export class UserService {
     }
 
     async listAll() {
-        try{
+        try {
             const users = await this.userRepository.find();
-            return users;
-        }catch(e){
+            const response_mapped = users.map(user => ({ id: user?.id, name: user?.name, email: user?.email }))
+            return response_mapped;
+        } catch (e) {
             throw e;
         }
     }
