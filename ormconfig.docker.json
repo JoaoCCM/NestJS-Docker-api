@@ -3,8 +3,8 @@
     "postgres_host": "postgres",
     "postgres_port": 5432,
     "postgres_user": "postgres",
-    "postgres_password": "",
-    "postgres_database": "",
+    "postgres_password": "postgres_jc_6319",
+    "postgres_database": "nestjs_docker",
     "synchronize": true,
     "logging": false,
     "entities": [

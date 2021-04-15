@@ -9,11 +9,10 @@ services:
     ports:
       - "5000:5000"
     build:
-      dockerfile: Dockerfile
       context: .
       target: development
     networks:
-      - nesjs-network
+      - nwebnetesjs-network
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -34,4 +33,4 @@ services:
       retries: 5
 
 networks:
-    nesjs-network:
+    webnet:

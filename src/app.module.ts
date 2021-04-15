@@ -4,16 +4,23 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bull';
+import { auth } from './middlewares/auth.middleware';
 
 import { User } from './entities/user.entity'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379
+      }
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      // host: process.env.POSTGRES_HOST,
+      host: process.env.POSTGRES_HOST,
       port: parseInt(process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
@@ -29,9 +36,8 @@ import { User } from './entities/user.entity'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      // auth
-      .apply()
+    consumer      
+      .apply(auth)
       .exclude(
         { path: '/health-check', method: RequestMethod.ALL },
         { path: '/user', method: RequestMethod.POST },
