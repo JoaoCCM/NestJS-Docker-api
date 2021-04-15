@@ -5,23 +5,14 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { BullModule } from '@nestjs/bull';
+import { typeOrmConfig } from '../typeorm.config';
 
 import { User } from './entities/user.entity'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      // host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      entities: [User],
-      autoLoadEntities: true,
-      synchronize: process.env?.NODE_ENV !== 'prod' ? true : false,
-    }),
+    TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
   ],
   controllers: [AppController],

@@ -1,37 +1,47 @@
+
 version: '3'
 
 services:
-  backend:
-    container_name: backend
-    image: nest-api
-    depends_on: 
-      - postgres
-    ports:
-      - "5000:5000"
+  api:
     build:
-      dockerfile: Dockerfile
       context: .
-      target: development
-    networks:
-      - nesjs-network
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    container_name: nest-api
+    restart: always
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - api-logs:/usr/src/app/logs:rw
+    depends_on:
+      - pgsql
+    networks:
+      - webnet
 
-  postgres:
-    image: postgres:13.2-alpine
+  pgsql:
+    image: postgres:alpine
+    ports:
+      - '30001:5432'
+    container_name: 'pgsql'
+    restart: always
+    volumes:
+      - pg-data:/var/lib/postgresql/data
     env_file: .env
     environment:
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
       - POSTGRES_DATABASE=$POSTGRES_DATABASE
+    networks:
+      - webnet
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - 8080:8080
+
+volumes:
+  api-logs:
+  pg-data:
 
 networks:
-    nesjs-network:
+  webnet:
