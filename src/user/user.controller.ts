@@ -21,7 +21,7 @@ export class UserController {
     }
 
     @Get('/all')
-    async listAll( @Res() res: Response): Promise<void> {
+    async listAll(@Res() res: Response): Promise<void> {
         try {
             const response = await this.userService.listAll();
             res.status(201).json(response)

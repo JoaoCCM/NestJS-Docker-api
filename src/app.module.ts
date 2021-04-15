@@ -4,11 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from '../typeorm.config';
-import { BullModule } from '@nestjs/bull';
+import { typeOrmConfig } from './config/typeorm.config';
 import { auth } from './middlewares/auth.middleware';
-
-import { User } from './entities/user.entity'
 
 @Module({
   imports: [

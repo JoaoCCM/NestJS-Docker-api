@@ -1,4 +1,3 @@
-
 version: '3'
 
 services:
@@ -12,15 +11,15 @@ services:
     restart: always
     volumes:
       - api-logs:/usr/src/app/logs:rw
+    environment:
+      - NODE_ENV=development
     depends_on:
       - pgsql
-    networks:
-      - webnet
 
   pgsql:
     image: postgres:alpine
     ports:
-      - '30001:5432'
+      - '5432:5432'
     container_name: 'pgsql'
     restart: always
     volumes:
@@ -30,8 +29,6 @@ services:
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
       - POSTGRES_DATABASE=$POSTGRES_DATABASE
-    networks:
-      - webnet
 
   adminer:
     image: adminer
@@ -43,5 +40,3 @@ volumes:
   api-logs:
   pg-data:
 
-networks:
-  webnet:
