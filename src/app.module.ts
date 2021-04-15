@@ -4,8 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { BullModule } from '@nestjs/bull';
 import { typeOrmConfig } from '../typeorm.config';
+import { BullModule } from '@nestjs/bull';
+import { auth } from './middlewares/auth.middleware';
 
 import { User } from './entities/user.entity'
 
@@ -20,9 +21,8 @@ import { User } from './entities/user.entity'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      // auth
-      .apply()
+    consumer      
+      .apply(auth)
       .exclude(
         { path: '/health-check', method: RequestMethod.ALL },
         { path: '/user', method: RequestMethod.POST },
