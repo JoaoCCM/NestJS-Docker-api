@@ -4,15 +4,14 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN apk update && apk upgrade
-RUN apk add python3 g++ make
 RUN npm install glob rimraf
 
 RUN npm install && npm cache clean --force
 
+RUN npm run build
 
 EXPOSE 5000
 
 COPY . .
 
-CMD [ "npm","run", "start:dev" ]
+CMD ["node", "dist/main.ts"]

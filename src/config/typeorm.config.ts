@@ -5,11 +5,17 @@ const { POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DATABASE } = p
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: 'localhost',
+  host: 'pgsql',
   port: parseInt(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DATABASE,
   entities: [__dirname + '/../entities/*.entity.{js,ts}'],
   synchronize: process.env?.NODE_ENV !== 'prod' ? true : false,
+  ssl: false,
+  migrationsTableName: 'migration',
+  migrations: ['src/migration/*.ts'],
+  cli: {
+    migrationsDir: 'src/migration',
+  },
 };
