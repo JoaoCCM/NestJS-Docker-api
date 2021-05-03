@@ -1,45 +1,25 @@
 version: '3'
 
 services:
-  nest-api:
+  backend:
+    container_name: nest-api
     build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - '5000:5000'
-    container_name: nest-api
-    restart: always
-    depends_on:
-      - pgsql
-    networks:
-      - default
-    links:
-      - pgsql:pgsql
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev
-
-  pgsql:
-    ports:
-      - '5436:5432'
-    image: postgres:alpine
-    container_name: pgsql
+      target: development
     restart: always
     volumes: 
+      - .:/usr/src/app
       - postgres-data:/var/lib/postgresql/data
     env_file: .env
     environment:
+      - POSTGRES_HOST=$POSTGRES_HOST
+      - POSTGRES_PORT=$POSTGRES_PORT
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
       - POSTGRES_DATABASE=$POSTGRES_DATABASE
-      - PGDATA= /var/lib/postgresql/data/pgdata
-    networks:
-      - default
-      
+
+    network_mode: host
+    command: npm run start:dev
+    
 volumes:
-  postgres-data: {}
-
-networks:
-  default:
-
+  postgres-data: 

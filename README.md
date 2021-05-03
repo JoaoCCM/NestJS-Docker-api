@@ -45,6 +45,20 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Running the app with docker and postgres locally
+
+```bash
+# start your PostgreSQL serve on your machine (Linux)
+$ sudo -i -u postgres
+
+# start the nestJS api
+$ docker-compose up --build -V -d (you might need to use sudo)
+
+# It is important to keep the `network_mode: host` in the docker-compose file. It's telling docker to use the host's network.
+```
+
+It is important to keep the `network_mode: host` in the docker-compose file. It's telling docker to use the host's network
+
 ## Test
 
 ```bash
