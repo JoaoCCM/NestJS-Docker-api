@@ -2,7 +2,9 @@ import { Controller, Post, ValidationPipe, Res, Body, Get } from '@nestjs/common
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/user.dto';
 import { Response } from 'express';
-
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+@ApiBearerAuth()
+@ApiTags('users')
 @Controller('user')
 export class UserController {
     constructor(
